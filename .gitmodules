@@ -1,15 +1,15 @@
-[submodule "aa-operator"]
-	path = aa-operator
-	url = https://github.com/AttractAcquisition/aa-operator
-[submodule "aa-outreach-auto"]
-	path = aa-outreach-auto
-	url = https://github.com/AttractAcquisition/aa-outreach-auto
 [submodule "AICOS"]
 	path = AICOS
 	url = https://github.com/AttractAcquisition/AICOS
-[submodule "aa-proof-capture"]
-	path = aa-proof-capture
-	url = https://github.com/AttractAcquisition/aa-proof-capture
-[submodule "Attract-Acquisition"]
-	path = Attract-Acquisition
-	url = https://github.com/AttractAcquisition/Attract-Acquisition
+[submodule "Outreach-System"]
+	path = Outreach-System
+	url = https://github.com/AttractAcquisition/Outreach-System
+[submodule "COS"]
+	path = COS
+	url = https://github.com/AttractAcquisition/COS
+[submodule "Proof-Capture"]
+	path = Proof-Capture
+	url = https://github.com/AttractAcquisition/Proof-Capture
+[submodule "Website"]
+	path = Website
+	url = https://github.com/AttractAcquisition/Website

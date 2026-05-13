@@ -2,7 +2,7 @@
 echo 'AA Platform System Check'
 echo '========================'
 export SUPABASE_ACCESS_TOKEN=${SUPABASE_ACCESS_TOKEN}
-cd aa-operator
+cd AICOS
 echo ''
 echo '--- Recent AI task log (last 10) ---'
 npx supabase db query 'select sop_id, sop_name, status, created_at from ai_task_log order by created_at desc limit 10' --linked

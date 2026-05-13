@@ -14,7 +14,7 @@ functions=(
   generate-whatsapp-reply-suggestion sync-whatsapp-templates whatsapp-integration-health
   meta-ads-sync send-push-notification
 )
-cd aa-operator
+cd AICOS
 for fn in ${functions[@]}; do
   echo 'Deploying' $fn
   npx supabase functions deploy $fn --no-verify-jwt 2>&1 | tail -2

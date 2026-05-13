@@ -14,29 +14,29 @@ Every application in this workspace connects to the same Supabase project. There
 
 ## 2. THE FIVE APPLICATIONS
 
-### `aa-operator/` — React + Vite + TypeScript
+### `AICOS/` — React + Vite + TypeScript
 **The AI control panel.**
-- Deployed on Railway at `aa-operator-production.up.railway.app`
+- Deployed on Railway at `AICOS-production.up.railway.app`
 - Primary operator interface: daily briefings, approval queue, sprint monitoring, pipeline, clients, finance, analytics, all 58 SOPs
 - Claude runs as an autonomous operator via Supabase Edge Functions
 - Cron runner fires all scheduled SOPs via a separate Railway cron service
 
-### `aa-outreach-auto/` — React + Vite + TypeScript
+### `Outreach-System/` — React + Vite + TypeScript
 **The WhatsApp command centre.**
-- Deployed on GitHub Pages at `attractacquisition.github.io/aa-outreach-auto`
+- Deployed on GitHub Pages at `attractacquisition.github.io/Outreach-System`
 - Manages all WhatsApp conversations, inbound message handling, AI reply suggestions, outreach queue approval, template management, suppression list
 - Authentication via Supabase email/password
 
-### `AICOS/` — React + Vite + TypeScript
+### `COS/` — React + Vite + TypeScript
 **The main internal operations platform.**
 - Contains proof sprint management, client delivery, content production, brand intelligence, and broader agency operations
-- Shares all core tables with aa-operator
+- Shares all core tables with AICOS
 
-### `aa-proof-capture/` — React + Vite + TypeScript
+### `Proof-Capture/` — React + Vite + TypeScript
 **Proof capture and client results documentation.**
 - Clients submit proof of results which feeds into reporting and case studies
 
-### `Attract-Acquisition/` — Public marketing website
+### `Website/` — Public marketing website
 **The public-facing marketing website for Attract Acquisition.**
 - Represents the brand externally to prospective tradesman clients
 - Purpose: lead generation, brand presence, case studies, service information, conversion to Proof Sprint sign-up
@@ -62,7 +62,7 @@ All 5 applications read and write to this single Supabase project. Edge Function
 
 ## 4. COMPLETE TABLE REGISTRY — PUBLIC SCHEMA
 
-### Core prospect and client tables (owned by aa-operator)
+### Core prospect and client tables (owned by AICOS)
 
 | Table | Purpose |
 |---|---|
@@ -73,7 +73,7 @@ All 5 applications read and write to this single Supabase project. Edge Function
 | `ad_set_performance_logs` | Meta ads performance history per ad set |
 | `prospect_batches` | Daily batch staging records |
 
-### Automation and operations tables (owned by aa-operator)
+### Automation and operations tables (owned by AICOS)
 
 | Table | Purpose |
 |---|---|
@@ -85,7 +85,7 @@ All 5 applications read and write to this single Supabase project. Edge Function
 | `knowledge_base` | SOPs, HTML templates (MJR, SPOA), reference documents |
 | `push_subscriptions` | Web Push notification browser subscriptions |
 
-### Finance tables (owned by aa-operator)
+### Finance tables (owned by AICOS)
 
 | Table | Purpose |
 |---|---|
@@ -93,14 +93,14 @@ All 5 applications read and write to this single Supabase project. Edge Function
 | `finance_snapshots` | Weekly finance dashboard snapshot JSON |
 | `kpi_snapshots` | Monthly KPI review data with trend analysis |
 
-### Document and storage tables (owned by aa-operator)
+### Document and storage tables (owned by AICOS)
 
 | Table | Purpose |
 |---|---|
 | `documents` | References to files stored in Supabase Storage (MJR, SPOA, offer docs, onboarding briefs) |
 | `client_reports` | Weekly client report records |
 
-### WhatsApp domain tables (owned by aa-outreach-auto)
+### WhatsApp domain tables (owned by Outreach-System)
 
 | Table | Purpose |
 |---|---|
@@ -114,7 +114,7 @@ All 5 applications read and write to this single Supabase project. Edge Function
 | `integration_events` | Append-only log of all WhatsApp integration events |
 | `audit_events` | Compliance audit trail for all sends and actions |
 
-### AICOS platform tables (owned by AICOS)
+### COS platform tables (owned by COS)
 
 | Table | Purpose |
 |---|---|
@@ -127,7 +127,7 @@ All 5 applications read and write to this single Supabase project. Edge Function
 | `portal_documents` | Client portal document sharing |
 | `portal_messages` | Client portal messaging |
 | `portal_tasks` | Client portal task tracking |
-| `ledger_entries` | AICOS financial ledger |
+| `ledger_entries` | COS financial ledger |
 | `delivery_metrics` | Client delivery performance metrics |
 | `delivery_progress` | Sprint delivery progress tracking |
 | `distribution_metrics` | Outreach distribution metrics |
@@ -236,7 +236,7 @@ Use for **everything that requires generation, reasoning, or analysis**:
 
 ## 7. CRON SCHEDULE
 
-All 18 jobs run via `cron-runner.js` on the Railway `aa-operator-cron` service. All times in `Europe/London` timezone.
+All 18 jobs run via `cron-runner.js` on the Railway `AICOS-cron` service. All times in `Europe/London` timezone.
 
 ### Daily jobs
 | Time | Job |
@@ -283,19 +283,19 @@ All 18 jobs run via `cron-runner.js` on the Railway `aa-operator-cron` service. 
 ## 8. DEPLOYMENT INFRASTRUCTURE
 
 ### Railway project `37c7a8ab` (victorious-simplicity)
-- `aa-operator-cron` service — runs `node cron-runner.js`, uses `railway.cron.json`
+- `AICOS-cron` service — runs `node cron-runner.js`, uses `railway.cron.json`
 - Required env vars: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`
 
 ### Railway project `75d68c53` (refreshing-communication)
-- `aa-operator` web service — runs `node server.js`, uses `railway.json`, serves React frontend
+- `AICOS` web service — runs `node server.js`, uses `railway.json`, serves React frontend
 
 ### GitHub Pages
-- `aa-outreach-auto` — deployed via GitHub Actions at `attractacquisition.github.io/aa-outreach-auto`
+- `Outreach-System` — deployed via GitHub Actions at `attractacquisition.github.io/Outreach-System`
 - Requires GitHub Actions secrets: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
 
 ### Other
-- `AICOS` and `aa-proof-capture` — their own deployment targets
-- `Attract-Acquisition` — public marketing site, separate deployment
+- `COS` and `Proof-Capture` — their own deployment targets
+- `Website` — public marketing site, separate deployment
 
 ---
 
@@ -305,15 +305,15 @@ All 18 jobs run via `cron-runner.js` on the Railway `aa-operator-cron` service. 
 
 | Owner | Tables |
 |---|---|
-| **aa-operator** | `prospects`, `clients`, `sprints`, `approval_queue`, `ai_alerts`, `cron_schedule`, `daily_briefings`, `knowledge_base`, `finance_ledger`, `finance_snapshots`, `kpi_snapshots`, `documents`, `push_subscriptions` |
-| **aa-outreach-auto** | `whatsapp_conversations`, `whatsapp_messages`, `whatsapp_ai_suggestions`, `whatsapp_outreach_queue`, `whatsapp_suppression_list`, `whatsapp_templates` |
-| **AICOS** | All `proof_sprint_*` tables, `portal_*` tables, `campaigns`, `profiles`, `content_*` tables, `brand_*` tables, `ledger_entries`, `delivery_*` tables |
+| **AICOS** | `prospects`, `clients`, `sprints`, `approval_queue`, `ai_alerts`, `cron_schedule`, `daily_briefings`, `knowledge_base`, `finance_ledger`, `finance_snapshots`, `kpi_snapshots`, `documents`, `push_subscriptions` |
+| **Outreach-System** | `whatsapp_conversations`, `whatsapp_messages`, `whatsapp_ai_suggestions`, `whatsapp_outreach_queue`, `whatsapp_suppression_list`, `whatsapp_templates` |
+| **COS** | All `proof_sprint_*` tables, `portal_*` tables, `campaigns`, `profiles`, `content_*` tables, `brand_*` tables, `ledger_entries`, `delivery_*` tables |
 | **Shared append-only** | `ai_task_log`, `integration_events`, `audit_events` — all apps write, none delete |
 
 ### Cross-app data rules
 
-- `aa-outreach-auto` reads `prospects` and `clients` but **NEVER writes to them directly** — aa-operator Edge Functions own all writes
-- `aa-operator` can write `ai_intent`, `needs_human`, `stage` to `whatsapp_conversations` but does not own the table
+- `Outreach-System` reads `prospects` and `clients` but **NEVER writes to them directly** — AICOS Edge Functions own all writes
+- `AICOS` can write `ai_intent`, `needs_human`, `stage` to `whatsapp_conversations` but does not own the table
 - WhatsApp AI drafts flow through `whatsapp_ai_suggestions` (warm lead replies) and `whatsapp_outreach_queue` (cold outreach batches) — **NEVER through `approval_queue`**
 - `approval_queue` is for: `whatsapp_message` (outreach approval), `mjr_document`, `spoa_document`, `client_report`, `delivery_sequence`, `offer_document`, `call_brief`
 - The suppression list **must** be checked via `checkSuppression()` before any WhatsApp send operation
@@ -330,7 +330,7 @@ All 18 jobs run via `cron-runner.js` on the Railway `aa-operator-cron` service. 
 
 ## 10. ENVIRONMENT VARIABLES BY SERVICE
 
-### Railway `aa-operator` web service
+### Railway `AICOS` web service
 ```
 VITE_SUPABASE_URL
 VITE_SUPABASE_ANON_KEY
@@ -349,7 +349,7 @@ WHATSAPP_PHONE_NUMBER_ID
 VITE_VAPID_PUBLIC_KEY
 ```
 
-### Railway `aa-operator-cron` service
+### Railway `AICOS-cron` service
 ```
 SUPABASE_URL
 SUPABASE_SERVICE_ROLE_KEY
@@ -379,7 +379,7 @@ AI_PROVIDER
 AI_MODEL
 ```
 
-### GitHub Actions (`aa-outreach-auto`)
+### GitHub Actions (`Outreach-System`)
 ```
 VITE_SUPABASE_URL
 VITE_SUPABASE_ANON_KEY
@@ -397,7 +397,7 @@ VITE_SUPABASE_ANON_KEY
 6. **Are new environment variables needed?** Add to all required places: Railway, Supabase secrets, GitHub Actions, `.env.example`.
 7. **Commit each repo independently** with a clear commit message.
 8. **After any Edge Function change**, redeploy it immediately.
-9. **Check `docs/sop-audit.md`** in `aa-operator` for SOP coverage status before adding new SOP automations.
+9. **Check `docs/sop-audit.md`** in `AICOS` for SOP coverage status before adding new SOP automations.
 
 ---
 
@@ -438,7 +438,7 @@ npx supabase db query \
   --linked
 ```
 
-### Add a new user to aa-outreach-auto
+### Add a new user to Outreach-System
 Supabase dashboard → Authentication → Users → Add User → enter email and password.
 
 ### Rotate the Supabase access token
@@ -449,9 +449,9 @@ export SUPABASE_ACCESS_TOKEN=new-token
 
 ---
 
-## 13. ATTRACT-ACQUISITION WEBSITE
+## 13. WEBSITE
 
-Repo: `Attract-Acquisition/`
+Repo: `Website/`
 
 The public marketing website for Attract Acquisition, representing the brand externally to prospective tradesman clients.
 

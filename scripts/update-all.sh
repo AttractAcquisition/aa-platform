@@ -1,6 +1,6 @@
 #!/bin/bash
 echo 'Updating all AA Platform submodules...'
-for repo in aa-operator aa-outreach-auto AICOS aa-proof-capture Attract-Acquisition; do
+for repo in AICOS Outreach-System COS Proof-Capture Website; do
   echo ''
   echo '--- Updating' $repo '---'
   cd $repo
