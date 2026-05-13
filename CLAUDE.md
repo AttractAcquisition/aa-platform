@@ -16,28 +16,31 @@ Every application in this workspace connects to the same Supabase project. There
 
 ### `AICOS/` — React + Vite + TypeScript
 **The AI control panel.**
-- Deployed on Railway at `AICOS-production.up.railway.app`
+- Deployed at `https://operator.attractacq.com`
 - Primary operator interface: daily briefings, approval queue, sprint monitoring, pipeline, clients, finance, analytics, all 58 SOPs
 - Claude runs as an autonomous operator via Supabase Edge Functions
 - Cron runner fires all scheduled SOPs via a separate Railway cron service
 
 ### `Outreach-System/` — React + Vite + TypeScript
 **The WhatsApp command centre.**
-- Deployed on GitHub Pages at `attractacquisition.github.io/Outreach-System`
+- Deployed at `https://outreach.attractacq.com`
 - Manages all WhatsApp conversations, inbound message handling, AI reply suggestions, outreach queue approval, template management, suppression list
 - Authentication via Supabase email/password
 
 ### `COS/` — React + Vite + TypeScript
 **The main internal operations platform.**
+- Deployed at `https://app.attractacq.com`
 - Contains proof sprint management, client delivery, content production, brand intelligence, and broader agency operations
 - Shares all core tables with AICOS
 
 ### `Proof-Capture/` — React + Vite + TypeScript
 **Proof capture and client results documentation.**
+- Deployed at `https://proof.attractacq.com`
 - Clients submit proof of results which feeds into reporting and case studies
 
 ### `Website/` — Public marketing website
 **The public-facing marketing website for Attract Acquisition.**
+- Deployed at `https://attractacq.com`
 - Represents the brand externally to prospective tradesman clients
 - Purpose: lead generation, brand presence, case studies, service information, conversion to Proof Sprint sign-up
 - May share Supabase for form submissions, lead capture, and populating the `prospects` table
@@ -287,15 +290,16 @@ All 18 jobs run via `cron-runner.js` on the Railway `AICOS-cron` service. All ti
 - Required env vars: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`
 
 ### Railway project `75d68c53` (refreshing-communication)
-- `AICOS` web service — runs `node server.js`, uses `railway.json`, serves React frontend
+- `AICOS` web service — runs `node server.js`, uses `railway.json`, serves React frontend at `https://operator.attractacq.com`
 
 ### GitHub Pages
-- `Outreach-System` — deployed via GitHub Actions at `attractacquisition.github.io/Outreach-System`
+- `Outreach-System` — deployed via GitHub Actions at `https://outreach.attractacq.com` (custom domain, CNAME in `public/CNAME`)
 - Requires GitHub Actions secrets: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
 
 ### Other
-- `COS` and `Proof-Capture` — their own deployment targets
-- `Website` — public marketing site, separate deployment
+- `COS` — deployed at `https://app.attractacq.com`
+- `Proof-Capture` — deployed at `https://proof.attractacq.com`
+- `Website` — deployed at `https://attractacq.com`
 
 ---
 
