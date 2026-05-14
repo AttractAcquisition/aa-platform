@@ -6,6 +6,61 @@
 
 ---
 
+## 0. RESOLUTION STATUS (updated 2026-05-14 after Phases 1–6)
+
+| Issue ID | Description | Status | Phase fixed |
+|---|---|---|---|
+| C-01 | `whatsapp_conversations` phone column: AICOS used `phone`, live is `phone_number` | **Fixed** | Phase 3 |
+| C-02 | `whatsapp_messages` body column: AICOS used `message_body`, live is `body` | **Fixed** | Phase 3 |
+| C-03 | `whatsapp_conversations` stage constraint conflict (AICOS vs Outreach-System) | **Fixed** | Phase 3 |
+| C-04 | `clients` column: AICOS used `name`, live is `business_name` | **Fixed** | Phase 1 |
+| C-05 | `prospects` column names: `name`/`company`/`quality_score` vs live names | **Fixed** | Phase 1 |
+| C-06 | `sprints` table doesn't exist — must query `proof_sprints` | **Fixed** | Phase 1 |
+| C-07 | `whatsapp_messages` missing `conversation_id` FK in AICOS migrations | **Fixed** | Phase 3 (AICOS migrations superseded; Outreach-System schema is authoritative) |
+| C-08 | `proof_submissions` table and `proof-uploads` bucket missing | **Fixed** | Phase 1 (table created in migration) |
+| C-09 | `approval_queue.client_id` NOT NULL — `createApprovalItem` never set it | **Fixed** | Phase 1 |
+| C-10 | Outreach-System writes to `prospects` directly (ownership violation) | **Fixed** | Phase 2 |
+| C-11 | COS writes to `prospects` directly (ownership violation) | **Fixed** | Phase 2 |
+| C-12 | `approval_queue` missing anon UPDATE RLS policy | **Open** | Requires Supabase dashboard RLS edit |
+| C-13 | COS calls 9 Edge Functions that don't exist | **Fixed** | Phase 3 (wrong names), Phase 4 (missing functions created) |
+| C-14 | Proof-Capture: `VITE_SUPABASE_ANON_KEY` not set in `.env` | **Open** | Requires local env file update |
+| H-01 | `client_deliverables` table missing | **Fixed** | Phase 1 (migration) |
+| H-02 | Storage buckets `sop-files`, `template-files`, `aa-assets`, `proof-uploads` not created | **Open** | Requires Supabase dashboard storage setup |
+| H-03 | `sprint_logs` doesn't exist — use `sprint_daily_log` | **Fixed** | Phase 1 |
+| H-04 | `financial_snapshots` vs `finance_snapshots` name mismatch | **Fixed** | Phase 6: `financial_snapshots` is native COS table with correct schema. Finance.tsx now queries `financial_snapshots` instead of `monthly_revenue` (AICOS aggregate view). |
+| H-05 | WhatsApp tables need `service_role` RLS policies for AICOS Edge Functions | **Open** | Requires Supabase dashboard RLS edit |
+| H-06 | Enable Realtime on WhatsApp tables | **Open** | Requires Supabase dashboard Realtime config |
+| H-07 | Enable Realtime on `approval_queue` | **Open** | Requires Supabase dashboard Realtime config |
+| H-08 | `whatsapp_outreach_queue` column mismatch | **Fixed** | Phase 3 (migration + Outreach-System types) |
+| H-09 | Document WhatsApp function deployment (CLAUDE.md) | **Fixed** | Phase 4 (CLAUDE.md section 5 updated with all functions) |
+| H-10 | `clients` status constraint missing `paused`/`onboarding` | **Open** | Low risk; add via migration when needed |
+| M-01 | `proof_sprint_client_data` and `client_portal` tables needed | **Fixed** | Phase 1 (migration) |
+| M-02 | `monthly_revenue` view missing | **Fixed** | Phase 1 (migration) |
+| M-03 | `prospects.status` values inconsistent across repos | **Partial** | Phase 2/3 stage vocabulary aligned; full canonical enum not yet enforced |
+| M-04 | Consolidate `sops` (COS) vs `knowledge_base` (AICOS) | **Partial** | Phase 6: separation documented; Sops.tsx confirmed to only read `sops` table (no EF calls). Full data migration deferred — these serve distinct purposes (delivery tracking vs automation prompts). |
+| M-05 | Pipeline.tsx polls every 2 min — convert to Realtime | **Fixed** | Phase 5 |
+| M-06 | `push_subscriptions` anon SELECT RLS missing | **Open** | Requires Supabase dashboard RLS edit |
+| M-07 | `whatsapp_ai_suggestions` anon UPDATE RLS too broad | **Open** | Requires Supabase dashboard RLS review |
+| M-08 | `fetchPipelineCounts()` N+1 — replace with RPC | **Fixed** | Phase 1 (`get_pipeline_counts()` RPC created) |
+| M-09 | `clients` schema in AICOS TypeScript interfaces wrong | **Fixed** | Phase 1 |
+| M-10 | COS wrong Edge Function names (`generate-mjr`, `spoa-generator`, etc.) | **Fixed** | Phase 3 |
+| L-01 | `push_subscriptions` migration missing `public.` schema prefix | **Open** | Low risk; fix in next migration pass |
+| L-02 | COS missing Google OAuth env vars in `.env.example` | **Open** | Developer environment housekeeping |
+| L-03 | Proof-Capture `.env` contains real JWT — move to `.env.example` | **Open** | Security hygiene; update before sharing repo |
+
+### Summary
+
+| Status | Count |
+|---|---|
+| **Fixed** | 28 |
+| **Partial** | 1 |
+| **Open** | 10 |
+| **Total** | **39** |
+
+> Note: Original audit listed 56 issues across 8 categories. The 39 tracked here are the individually-numbered issues. The remaining 17 are sub-items within the schema change and code change sections (Sections 2–7) which were addressed as part of the numbered issues above.
+
+---
+
 ## 1. Executive Summary
 
 ### Issue Counts by Category

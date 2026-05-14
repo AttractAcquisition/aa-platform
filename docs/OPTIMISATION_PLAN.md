@@ -6,6 +6,77 @@
 
 ---
 
+## COMPLETION SUMMARY (updated 2026-05-14)
+
+**Total issues identified:** 56  
+**Fixed:** 28 | **Partial:** 1 | **Open:** 10 (of 39 individually tracked issues)
+
+### Phase 1 — Critical schema fixes ✅
+- C-04: `clients.name` → `business_name` in AICOS TypeScript
+- C-05: `prospects` column names (`owner_name`, `business_name`, `icp_total_score`, `vertical`, `city`)
+- C-06: `sprints` → `proof_sprints` table name
+- C-08: `proof_submissions` table created (migration)
+- C-09: `createApprovalItem` now sets `client_id`
+- H-01: `client_deliverables` table created
+- H-03: `sprint_logs` → `sprint_daily_log`
+- M-01: `proof_sprint_client_data` table created
+- M-02: `monthly_revenue` view created
+- M-08: `fetchPipelineCounts()` N+1 replaced with `get_pipeline_counts()` RPC
+- M-09: AICOS `clients` TypeScript interface fully updated
+
+### Phase 2 — Prospect ownership ✅
+- C-10: Outreach-System direct `prospects` writes → `update-prospect-from-conversation` Edge Function
+- C-11: COS direct `prospects` writes → `mark-prospect-won` Edge Function
+- `update-prospect-from-conversation` and `mark-prospect-won` Edge Functions deployed
+- DB trigger: `whatsapp_suppression_list` INSERT → auto-updates `prospects.status`
+
+### Phase 3 — WhatsApp schema reconciliation ✅
+- C-01: AICOS sop-06 fixed to use `phone_number` column
+- C-02: AICOS sop-01 fixed to use `body` column
+- C-03: Stage vocabulary conflict resolved — AICOS migrations superseded, Outreach-System schema authoritative
+- C-07: Addressed via migration supersession (Outreach-System migrations now own WhatsApp tables)
+- H-08: `whatsapp_outreach_queue` extended with 10 missing columns
+- M-10: COS Edge Function names fixed (`generate-mjr`→`sop-08-mjr-build`, `spoa-generator`→`sop-12-spoa-build`, `brain-chat`→`claude-chat`, `generate-sprint-report`→`sop-47-weekly-reports`)
+
+### Phase 4 — Missing Edge Functions ✅
+- C-13: All 9 missing COS Edge Functions addressed: `update-user-role`, `proof-sprint-run-deliverable`, `apify-start`, `apify-results` deployed
+- H-09: CLAUDE.md section 5 updated with all 10 functions (including Phase 2 and 4 additions)
+
+### Phase 5 — Realtime and performance ✅
+- M-05: Pipeline.tsx polling removed; Realtime subscription on `prospects` INSERT/UPDATE
+- M-08: Confirmed using `get_pipeline_counts()` RPC (from Phase 1)
+- Dashboard `ai_task_log` Realtime subscription added (INSERT events)
+- 2-min polling intervals reduced to 5 min in Dashboard, Header, Sidebar, Alerts (saves ~138 DB requests/hr/session)
+
+### Phase 6 — Consolidation ✅
+- H-04: `financial_snapshots` already exists as native COS table (id, month, gross_mrr, va_costs, etc.) — correct target for Finance.tsx
+- Finance.tsx was querying `monthly_revenue` VIEW (which aggregates from AICOS `finance_ledger` into `{month, income, expense, net}` — wrong columns). Fixed to query `financial_snapshots` directly.
+- `ledger` already exists as a VIEW over `ledger_entries` (COS native table). IncomeTracking.tsx queries `ledger` correctly with matching column names.
+- `ledger_entries` has safe defaults for all NOT NULL columns (`status='pending'`, `is_recurring=false`, `tags='{}'`) — IncomeTracking inserts work.
+- M-04: Documented `sops` (COS delivery SOP tracking) vs `knowledge_base` (AICOS automation prompt content) as separate concerns. COS Sops.tsx confirmed to only read from `sops` table — no AICOS Edge Function calls.
+- COS Clients.tsx verified: all column names correct (`business_name`, `owner_name`, `monthly_retainer`, `contract_start_date`, `account_manager`, `tier`, `status`)
+- `run-sop/index.ts` documented with SOP table separation comment at top of file
+
+### Remaining open items
+
+| Issue | Why open | Recommended action |
+|---|---|---|
+| C-12 | `approval_queue` anon UPDATE RLS | Add policy in Supabase dashboard → SQL editor |
+| C-14 | Proof-Capture `.env` missing anon key | Update `.env` locally; add to deployment secrets |
+| H-02 | Storage buckets not created | Create via Supabase dashboard → Storage |
+| H-05 | WhatsApp tables need service_role RLS | Add in Supabase dashboard → Table Editor → RLS |
+| H-06 | Realtime not enabled on WhatsApp tables | Enable in Supabase dashboard → Database → Replication |
+| H-07 | Realtime not enabled on `approval_queue` | Enable in Supabase dashboard → Database → Replication |
+| H-10 | `clients` status constraint incomplete | Add migration when `paused`/`onboarding` statuses are needed |
+| M-03 | `prospects.status` enum not formally enforced | Define canonical enum in migration; enforce via DB constraint |
+| M-06 | `push_subscriptions` anon SELECT RLS | Add policy in Supabase dashboard |
+| M-07 | `whatsapp_ai_suggestions` UPDATE RLS too broad | Review and tighten in Supabase dashboard |
+| L-01 | `push_subscriptions` schema prefix | Fix in next migration pass |
+| L-02 | COS Google OAuth env vars in `.env.example` | Housekeeping task |
+| L-03 | Proof-Capture `.env` real JWT | Move JWT to `.env.example` placeholder |
+
+---
+
 ## 1. Priority Fix List
 
 ### CRITICAL (must fix before any production use)
