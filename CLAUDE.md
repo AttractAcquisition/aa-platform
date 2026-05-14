@@ -213,8 +213,14 @@ All deployed to `fgyvcyksgbivhrqoxkmj`. All deployed with `--no-verify-jwt` unle
 
 | Function | Purpose |
 |---|---|
-| `meta-ads-sync` | Meta Marketing API performance sync, writes to `sprints` table |
+| `meta-ads-sync` | Meta Marketing API performance sync, writes to `proof_sprints` table |
 | `send-push-notification` | Web Push notification sender using VAPID, auto-removes expired subscriptions |
+| `update-prospect-from-conversation` | Maps `whatsapp_conversations.stage` → `prospects.status`, called by Outreach-System instead of direct DB write |
+| `mark-prospect-won` | Sets `prospects.status = 'closed_won'`, called by COS Clients page when converting a prospect to client |
+| `update-user-role` | Accepts `{user_id, role, metadata_id}`, validates role in admin/delivery/distribution/client, writes `app_metadata` via Supabase admin API |
+| `proof-sprint-run-deliverable` | Accepts `{client_id, deliverable_key, input_json}`, calls Sonnet to generate D1–D15 sprint deliverable content, upserts to `proof_sprint_client_data` |
+| `apify-start` | Accepts Scraper payload, triggers Apify Google Maps actor run; stubs when `APIFY_API_TOKEN` not set |
+| `apify-results` | Polls Apify run by `run_id`, maps dataset items to ProspectRow shape; stub mode returns sample data |
 
 ---
 
