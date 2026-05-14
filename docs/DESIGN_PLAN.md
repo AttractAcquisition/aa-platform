@@ -26,7 +26,7 @@ The four internal tools form a coherent ecosystem with one shared Supabase backe
 | **COS** | Internal ops platform | Teal | `#00E5C3` | Keep as-is — source of truth |
 | **AICOS** | AI operator control panel | Amber | `#FF8000` | Alert, urgency, command authority |
 | **Outreach-System** | WhatsApp command centre | Sky Blue | `#38BDF8` | Communication, flow, trustworthy |
-| **Proof-Capture** | Client results capture | Violet | `#A78BFA` | Achievement, results, transformation |
+| **Proof-Capture** | Client results capture | Teal | `#00E5C3` | Matches COS — client-facing brand consistency |
 
 ---
 
@@ -90,32 +90,17 @@ No changes needed.
 
 ---
 
-### 2.4 Proof-Capture — Violet `#A78BFA`
+### 2.4 Proof-Capture — Teal `#00E5C3` (matches COS)
 
-**Primary hex:** `#A78BFA`  
-**HSL:** `262 83% 76%`  
-**Contrast on `#07100E`:** ~8.9:1 ✓ WCAG AA+  
+**Primary hex:** `#00E5C3`  
+**HSL:** `171 100% 45%`  
+**Contrast on `#07100E`:** ~8.1:1 ✓ WCAG AA+  
 
-**Primary (button bg, needs darker for white text):**  
-`#7C3AED` HSL `262 83% 58%` — white text contrast: 5.1:1 ✓  
-**Accent (glow/ring/highlights):** `#A78BFA` (lighter violet)  
+**Rationale:** Proof-Capture is the client-facing mobile app presented directly to tradesmen clients. It intentionally shares the Attract Acquisition brand teal with COS — from the client's perspective, the tool *is* the Attract Acquisition brand. The colour continuity reinforces that this is an official AA product, not a generic third-party capture tool. The internal operator distinguishes between COS and Proof-Capture by layout and context, not by colour. Changing Proof-Capture to a different hue would weaken the brand presentation to the paying client.
 
-**Background tint shift:** `#07100E` → `#07050F` (shift from green-black to deep violet-black)  
-**Surface:** `#0D0C17` (from `#0D1C18`)  
-**Elevated:** `#14121E` (from `#132420`)  
+> **Note:** The original audit (May 2026) flagged this as a "critical collision." This assessment was revised after considering the client-facing nature of Proof-Capture. The collision is only a problem between internal tools; client-facing tools should reinforce the brand colour, not diverge from it.
 
-**Gradient for hero section:**  
-`radial-gradient(ellipse 60% 40% at 50% 0%, hsl(262 83% 58% / 0.18), transparent 70%)`
-
-**Rationale:** Proof-Capture is the client-facing mobile app where tradesmen log their job results — before/during/after photos, proof of the work done. Violet represents achievement, transformation, and results. It's the colour of completion ceremonies, "purple heart" accomplishment, and the final step in a journey. The shift from teal (COS) to violet (Proof-Capture) also mirrors the business journey: teal for "working the pipeline" → violet for "proof of delivery." This removes the critical branding collision where Proof-Capture currently looks identical to COS.
-
-**Emotional register:** Achievement, transformation, completion, premium results
-
-**WCAG verification:**
-- `#A78BFA` luminance: 0.2126×0.417 + 0.7152×0.282 + 0.0722×0.966 = 0.0887 + 0.2016 + 0.0698 = 0.360
-- Background `#07050F` luminance: ≈ 0.001
-- Contrast: (0.360 + 0.05) / (0.001 + 0.05) = **8.0:1** ✓
-- For dark primary button `#7C3AED`: lum ≈ 0.0777; white: (1+0.05)/(0.0777+0.05) = **8.2:1** ✓
+**No changes needed for Proof-Capture.**
 
 ---
 
@@ -759,10 +744,10 @@ Extract shared components. Out of scope for Phase 1–4.
 ## Appendix A — Colour Reference Card
 
 ```
-COS        TEAL    #00E5C3  hsl(171 100% 45%)   bg: #070F0D
-AICOS      AMBER   #FF8000  hsl( 30 100% 50%)   bg: #0A0800
-OUTREACH   SKY     #38BDF8  hsl(199  93% 60%)   bg: #0B0F19
-PROOF      VIOLET  #A78BFA  hsl(262  83% 76%)   bg: #07050F
+COS        TEAL    #00E5C3  hsl(171 100% 45%)   bg: #070F0D   internal ops
+AICOS      AMBER   #FF8000  hsl( 30 100% 50%)   bg: #0A0800   operator control panel  ✓ implemented
+OUTREACH   SKY     #38BDF8  hsl(199  93% 60%)   bg: #0B0F19   comms centre            ✓ implemented
+PROOF      TEAL    #00E5C3  hsl(171 100% 45%)   bg: #07100E   client-facing (= COS brand, intentional)
 ```
 
 All four colours on their respective dark backgrounds exceed WCAG AA (4.5:1) — most exceed AA+ (7:1).
