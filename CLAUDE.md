@@ -182,20 +182,20 @@ All deployed to `fgyvcyksgbivhrqoxkmj`. All deployed with `--no-verify-jwt` unle
 | `sop-12-spoa-build` | Sonnet | SPOA document generation, stores in Supabase Storage |
 | `sop-15-offer-prep` | Sonnet | Offer document and call prep cheat sheet |
 | `sop-17-onboarding-brief` | Sonnet | Client onboarding brief with campaign strategy |
-| `sop-21-sprint-daily-ops` | Sonnet | Sprint daily ops, KPI logging, alert creation |
-| `sop-23-ads-monitoring` | Sonnet | Meta ads kill/scale logic, pauses underperforming ad sets |
+| `sop-21-sprint-daily-ops` | None | Deterministic sprint health calculations and Meta ads sync — no Anthropic calls |
+| `sop-23-ads-monitoring` | None | Deterministic kill/scale logic via Meta Marketing API — no Anthropic calls |
 | `sop-26-sprint-closeout` | Sonnet | Day 14 sprint closeout analysis and recommendation |
 | `sop-31-proof-brand-ops` | Sonnet | Proof Brand monthly delivery tracking with upsell detection |
 | `sop-33-sop-versioning` | Sonnet | SOP performance review and improvement suggestions |
 | `sop-35-upsell-detection` | Sonnet | Deterministic upsell scoring, Claude only for qualifying clients |
 | `sop-41-weekly-review` | Sonnet | Weekly review briefing with nine parallel queries |
 | `sop-43-authority-brand-ops` | Sonnet | Authority Brand monthly delivery review |
-| `sop-46-billing` | Sonnet | Billing, invoice tracking, payment chase message drafting |
+| `sop-46-billing` | Haiku | Billing, invoice tracking, payment chase message drafting |
 | `sop-47-weekly-reports` | Sonnet | Weekly client HTML report generation |
 | `sop-49-content` | Sonnet | Social media content brief generation |
 | `sop-51-admin-check` | Haiku | Admin health check, flags stale approvals and cron failures |
 | `sop-52-backup-check` | Haiku | Backup and security check with dry-run ping |
-| `sop-53-kpi-review` | Sonnet | Monthly KPI review with period comparison |
+| `sop-53-kpi-review` | Haiku | Monthly KPI review with period comparison |
 | `sop-56-finance-dashboard` | Haiku | Weekly finance aggregation and snapshot |
 
 ### WhatsApp functions
@@ -228,16 +228,22 @@ All deployed to `fgyvcyksgbivhrqoxkmj`. All deployed with `--no-verify-jwt` unle
 
 ### HAIKU (`claude-haiku-4-5-20251001`)
 Use for **mechanical tasks with structured output only**:
-- SOPs 02, 03, 04, 06, 51, 52, 56
+- SOPs 02, 03, 04, 06, 46, 51, 52, 53, 56
 - Dedup checks, CRM staging, finance aggregation, reply classification, status updates
+- Short templated text generation (payment chase messages, KPI commentary)
 - Any function that does not generate creative or analytical text
 
 ### SONNET (`claude-sonnet-4-6`)
 Use for **everything that requires generation, reasoning, or analysis**:
 - All document builds (MJR, SPOA, onboarding briefs, offer docs)
 - Outreach drafts, reports, briefings, call briefs
-- Ads analysis, sprint analysis, KPI reviews
+- Ads analysis, sprint analysis
 - Chat interface, content generation
+
+### NO AI — Pure TypeScript
+These functions contain zero Anthropic API calls. Do not assign a model to them:
+- `sop-21-sprint-daily-ops` — deterministic sprint health calculations and Meta ads sync via `meta-ads-sync` Edge Function invocation
+- `sop-23-ads-monitoring` — deterministic kill/scale logic applied directly against Meta Marketing API data
 
 **NEVER use Opus in any function in this system.** Sonnet handles all complex tasks. If output quality is insufficient, improve the prompt rather than escalating to Opus.
 
